@@ -1,14 +1,33 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Liste animaux
     </ion-title>
+    <button ion-button (click)="showReorder=! showReorder" 
+           [color]="showReorder ? 'primary':'secondary'">Reorder</button>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ion-list>
+    <ion-item-group [reorder]="showReorder" (ionItemReorder)="$event.applyTo(animaux)">
+      <ion-item-sliding *ngFor="let animal of animaux ;let pos=index">
+        <ion-item (click)="onAnimalClick(animal)">
+          <ion-avatar item-left>
+            <img src="assets/{{animal.image}}">
+          </ion-avatar>
+          <h3>{{animal.title}}</h3>
+          <a>{{animal.desc}}</a>
+          <ion-icon name="volume-up" [hidden]="! animal.playing" item-right></ion-icon>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="deleteAnimal(pos)">
+            <ion-icon name="trash"></ion-icon>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
+  </ion-list>
 </ion-content>
+<ion-footer padding>
+  <button ion-button block (click)="playSound()">Jouer</button>
+</ion-footer>
